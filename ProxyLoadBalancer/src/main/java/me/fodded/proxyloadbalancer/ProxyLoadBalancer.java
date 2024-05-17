@@ -2,8 +2,9 @@ package me.fodded.proxyloadbalancer;
 
 import lombok.Getter;
 import me.fodded.common.Common;
-import me.fodded.common.data.transfer.RedisClient;
+import me.fodded.common.data.statistics.transfer.RedisClient;
 import me.fodded.proxyloadbalancer.info.network.NetworkInstance;
+import me.fodded.proxyloadbalancer.info.network.listeners.bungeecord.PlayerConnectListener;
 import me.fodded.proxyloadbalancer.info.network.listeners.redis.RedisPlayerChangeServer;
 import me.fodded.proxyloadbalancer.info.network.listeners.redis.RedisPlayerJoin;
 import me.fodded.proxyloadbalancer.info.network.listeners.redis.RedisPlayerQuit;
@@ -17,6 +18,8 @@ import net.md_5.bungee.api.plugin.Plugin;
  * The best use case is that it does not let you in a server which is full if you're a regular player, or that it sends you
  * to a lobby which has fewer players in or more depending on the load balancing technique
  */
+
+// TODO: create a separate class which will be extending Plugin
 @Getter
 public class ProxyLoadBalancer extends Plugin {
 
@@ -33,7 +36,8 @@ public class ProxyLoadBalancer extends Plugin {
         this.networkInstance = new NetworkInstance();
         this.serverController = new ServerController();
 
-        initializeRedisListeners();
+        this.initializeRedisListeners();
+        this.getProxy().getPluginManager().registerListener(this, new PlayerConnectListener());
     }
 
     private void initializeRedisListeners() {

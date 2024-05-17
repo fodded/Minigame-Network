@@ -1,6 +1,6 @@
 package me.fodded.proxyloadbalancer.info.network.listeners.redis;
 
-import me.fodded.common.data.transfer.IRedisListener;
+import me.fodded.common.data.statistics.transfer.IRedisListener;
 import me.fodded.proxyloadbalancer.ProxyLoadBalancer;
 import me.fodded.proxyloadbalancer.event.PlayerNetworkQuitEvent;
 import me.fodded.proxyloadbalancer.info.network.packets.PlayerQuitPacket;

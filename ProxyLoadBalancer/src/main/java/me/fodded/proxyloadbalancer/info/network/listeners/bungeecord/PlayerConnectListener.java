@@ -10,6 +10,10 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.util.UUID;
 
+
+/**
+ * Here we let other servers know that a player left the network, and we should do appropriate calculations
+ */
 public class PlayerConnectListener implements Listener {
 
     @EventHandler

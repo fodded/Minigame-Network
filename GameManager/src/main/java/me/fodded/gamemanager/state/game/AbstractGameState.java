@@ -25,11 +25,8 @@ public abstract class AbstractGameState implements Listener, IGameState {
     public AbstractGameState(AbstractGame game, String eventDisplayName) {
         this.game = game;
         this.eventDisplayName = eventDisplayName;
-
         this.gameEventHandler = new GameEventHandler(game.getPlugin());
     }
-
-    public abstract int getStateDuration();
 
     public void startGameState() {
         registerListener(this);
@@ -62,5 +59,10 @@ public abstract class AbstractGameState implements Listener, IGameState {
         JavaPlugin plugin = game.getPlugin();
         BukkitTask task = plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, delay, interval);
         tasks.add(task);
+    }
+
+    @Override
+    public GameEventHandler getEventHandler() {
+        return gameEventHandler;
     }
 }

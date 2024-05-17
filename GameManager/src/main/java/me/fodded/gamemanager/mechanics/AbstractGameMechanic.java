@@ -40,6 +40,6 @@ public abstract class AbstractGameMechanic {
     }
 
     public boolean isGameWorld(World world) {
-        return world != null && game.getGameWorld() != null && game.getGameWorld().getName().equals(world.getName());
+        return world != null && game.getGameWorldId() != null && game.getGameWorldId().equals(world.getUID());
     }
 }

@@ -15,12 +15,13 @@ public class GameEventHandler implements Listener {
         this.plugin = plugin;
     }
 
-    public <T extends Event> void registerEvent(Class<T> eventClass, Consumer<Event> action) {
+    @SuppressWarnings("unchecked")
+    public <T extends Event> void registerEvent(Class<T> eventClass, Consumer<T> action) {
         Bukkit.getPluginManager().registerEvent(eventClass, this, EventPriority.NORMAL, (listener, event) -> {
             if (!eventClass.isInstance(event)) {
                 return;
             }
-            action.accept(event);
+            action.accept((T) event);
         }, plugin, true);
     }
 }

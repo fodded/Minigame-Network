@@ -1,8 +1,8 @@
 package me.fodded.common;
 
 import lombok.Getter;
-import me.fodded.common.data.storage.DataStorageController;
-import me.fodded.common.data.transfer.RedisClient;
+import me.fodded.common.data.statistics.storage.DataStorageController;
+import me.fodded.common.data.statistics.transfer.RedisClient;
 
 import java.util.UUID;
 
@@ -22,5 +22,9 @@ public class Common {
         this.dataStorageController.initializeDataStorages();
 
         this.redisClient = new RedisClient();
+    }
+
+    public void initialize() {
+
     }
 }

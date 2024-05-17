@@ -1,21 +1,22 @@
 package me.fodded.gamemanager;
 
 import lombok.Data;
+import me.fodded.gamemanager.events.handler.GameEventHandler;
 import me.fodded.gamemanager.map.info.IGameMapInfo;
+import me.fodded.gamemanager.mechanics.GameMechanicsController;
 import me.fodded.gamemanager.state.game.AbstractGameState;
 import me.fodded.gamemanager.state.game.GameStateController;
 import me.fodded.gamemanager.state.player.PlayerStateRegistry;
 import me.fodded.gamemanager.state.player.PlayerStateTracker;
-import me.fodded.gamemanager.tracker.GameMechanicsTracker;
 import me.fodded.gamemanager.tracker.GamePlayerTracker;
-import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.UUID;
 
 @Data
-public abstract class AbstractGame implements IGame {
+public abstract class AbstractGame implements IGameActions {
 
     protected final UUID gameId;
     protected UUID gameWorldId;
@@ -27,9 +28,10 @@ public abstract class AbstractGame implements IGame {
 
     protected final GamePlayerTracker gamePlayerTracker;
     protected final PlayerStateTracker playerStateTracker;
-    protected final GameMechanicsTracker gameMechanicsTracker;
+    protected final GameMechanicsController gameMechanicsController;
 
     protected final PlayerStateRegistry playerStateRegistry;
+    protected final GameEventHandler eventHandler;
 
     protected final JavaPlugin plugin;
 
@@ -41,10 +43,12 @@ public abstract class AbstractGame implements IGame {
         this.gameStateController = new GameStateController();
 
         this.gamePlayerTracker = new GamePlayerTracker(this);
-        this.gameMechanicsTracker = new GameMechanicsTracker(this);
+        this.gameMechanicsController = new GameMechanicsController(this);
 
         this.playerStateRegistry = new PlayerStateRegistry();
         this.playerStateTracker = new PlayerStateTracker(playerStateRegistry);
+
+        this.eventHandler = new GameEventHandler(plugin);
     }
 
     protected abstract void setup();
@@ -74,15 +78,11 @@ public abstract class AbstractGame implements IGame {
     public final void end() {
         // TODO: remove game from the game instance tracker
         this.teardown();
+        HandlerList.unregisterAll(eventHandler);
     }
 
-    @Override
-    public void addPlayer(Player player) {
-        this.gamePlayerTracker.addPlayer(player.getUniqueId());
-    }
-
-    @Override
-    public void removePlayer(Player player) {
-        this.gamePlayerTracker.removePlayer(player.getUniqueId());
+    @SuppressWarnings("unchecked")
+    public <T extends IGameMapInfo> T getGameMapData() {
+        return (T) gameMapInfo;
     }
 }

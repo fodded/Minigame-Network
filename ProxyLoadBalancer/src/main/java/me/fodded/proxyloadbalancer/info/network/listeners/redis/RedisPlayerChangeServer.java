@@ -1,6 +1,6 @@
 package me.fodded.proxyloadbalancer.info.network.listeners.redis;
 
-import me.fodded.common.data.transfer.IRedisListener;
+import me.fodded.common.data.statistics.transfer.IRedisListener;
 
 /**
  * The packets which are sent from proxy side to proxy load balancer are being caught with redis here
