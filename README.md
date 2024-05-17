@@ -4,10 +4,10 @@ This project was inspired by Hypixel. The general idea was to create a solid cod
 
 **PROJECT LIBRARIES**
 
-![alt text](https://avatars.githubusercontent.com/u/45120?s=20&v=4) Mongo Database
+![alt text](https://avatars.githubusercontent.com/u/45120?s=20&v=4) *Mongo Database*
   - To save statistics in a persistent storage
 
-![alt text](https://avatars.githubusercontent.com/u/1529926?s=20&v=1)Redis
+![alt text](https://avatars.githubusercontent.com/u/1529926?s=20&v=1) *Redis*
   - To cache retrieved statistics from persistent storage to access it faster, whenever it's needed.
   - Redis is put in use as a way of inter communication inside of the network. As an example it synchronizes all players among different proxies to make it look like one big server, basically it's an implementation of RedisBungee
 
