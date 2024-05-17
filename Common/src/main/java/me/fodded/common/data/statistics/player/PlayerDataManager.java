@@ -37,13 +37,13 @@ public class PlayerDataManager<K extends UUID, V extends AbstractPlayerData> ext
     }
 
     public CompletableFuture<Void> updateData(K key, Consumer<V> consumerAction) {
-        return getData(key).thenAccept(data -> {
+        return getData(key).thenAcceptAsync(data -> {
             if(redisCache.containsKey(key)) {
                 updateCacheData(key, data, consumerAction);
             } else {
                 updatePersistentData(data);
             }
-        });
+        }, EXECUTOR_SERVICE);
     }
 
     @SuppressWarnings("unchecked")
@@ -53,7 +53,7 @@ public class PlayerDataManager<K extends UUID, V extends AbstractPlayerData> ext
 
             IPlayerDataStorage<V> playerDataStorage = Common.getInstance().getDataStorageController().getPlayerDataStorage();
             playerDataStorage.saveData(playerData);
-        });
+        }, EXECUTOR_SERVICE);
     }
 
     /**
@@ -72,7 +72,7 @@ public class PlayerDataManager<K extends UUID, V extends AbstractPlayerData> ext
 
             invalidateLocalData(key);
             invalidateRemoteCache(key);
-        }, delaySeconds, TimeUnit.SECONDS));
+        }, delaySeconds, TimeUnit.SECONDS), EXECUTOR_SERVICE);
     }
 
     private void updateCacheData(K key, V data, Consumer<V> consumerAction) {
