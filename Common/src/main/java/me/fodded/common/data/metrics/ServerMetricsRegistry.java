@@ -1,9 +1,7 @@
 package me.fodded.common.data.metrics;
 
 import com.influxdb.client.write.Point;
-import me.fodded.serversystem.data.metrics.storage.InfluxStorage;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
+import me.fodded.common.data.metrics.storage.InfluxStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,11 +17,12 @@ public class ServerMetricsRegistry {
 
     private final String serverName;
 
-    public ServerMetricsRegistry(InfluxStorage influx, JavaPlugin plugin, String serverName) {
+    public ServerMetricsRegistry(InfluxStorage influx, String serverName) {
         this.influx = influx;
         this.serverName = serverName;
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::tick, QUERY_DELAY, QUERY_DELAY);
+        //TODO: to be fixed
+        //Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::tick, QUERY_DELAY, QUERY_DELAY);
     }
 
     public void registerMetric(ServerMetric metric) {

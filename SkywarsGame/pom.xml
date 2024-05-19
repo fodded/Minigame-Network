@@ -4,12 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>me.fodded</groupId>
+        <groupId>me.fodded.network</groupId>
         <artifactId>Minigame-Network</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>SkywarsGame</artifactId>
+    <name>SkywarsGame</name>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -18,11 +19,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>me.fodded.gamemanager</groupId>
-            <artifactId>GameManager</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -36,8 +32,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.fodded.proxyloadbalancer</groupId>
-            <artifactId>ProxyLoadBalancer</artifactId>
+            <groupId>me.fodded.network</groupId>
+            <artifactId>NetworkManager</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

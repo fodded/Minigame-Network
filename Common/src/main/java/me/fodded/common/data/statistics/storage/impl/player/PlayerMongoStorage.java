@@ -4,7 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import me.fodded.common.data.config.DatabaseData;
-import me.fodded.common.data.statistics.player.AbstractPlayerData;
+import me.fodded.common.data.statistics.impl.player.AbstractPlayerData;
 import me.fodded.common.data.statistics.storage.impl.MongoStorage;
 import org.bson.Document;
 

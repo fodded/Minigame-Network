@@ -1,6 +1,6 @@
 package me.fodded.common.data.statistics.storage.impl.player;
 
-import me.fodded.common.data.statistics.player.AbstractPlayerData;
+import me.fodded.common.data.statistics.impl.player.AbstractPlayerData;
 import me.fodded.common.data.statistics.storage.impl.IDataInitializer;
 
 import java.util.UUID;

@@ -2,8 +2,7 @@ package me.fodded.common.data.metrics.impl;
 
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import me.fodded.serversystem.data.metrics.ServerMetric;
-import org.bukkit.Bukkit;
+import me.fodded.common.data.metrics.ServerMetric;
 
 public class PlayersOnlineMetrics implements ServerMetric {
 
@@ -14,7 +13,8 @@ public class PlayersOnlineMetrics implements ServerMetric {
 
     @Override
     public Point measure() {
-        int players = Bukkit.getOnlinePlayers().size();
+        //TODO: to be changed
+        int players = 1;
 
         return Point.measurement(getName())
                 .time(System.currentTimeMillis(), WritePrecision.MS)

@@ -4,12 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>me.fodded</groupId>
+        <groupId>me.fodded.network</groupId>
         <artifactId>Minigame-Network</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>me.fodded.common</groupId>
     <artifactId>Common</artifactId>
     <name>Common</name>
 
@@ -65,9 +64,9 @@
             <version>2.9.3</version>
         </dependency>
         <dependency>
-            <groupId>me.fodded.proxyloadbalancer</groupId>
-            <artifactId>ProxyLoadBalancer</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>com.influxdb</groupId>
+            <artifactId>influxdb-client-java</artifactId>
+            <version>3.3.0</version>
         </dependency>
     </dependencies>
 </project>
