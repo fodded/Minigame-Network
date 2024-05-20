@@ -13,7 +13,8 @@
         <module>SkywarsLobby</module>
         <module>SkywarsGame</module>
         <module>GameManager</module>
-        <module>NetworkManager</module>
+        <module>ProxyLoadBalancer</module>
+        <module>NetworkController</module>
         <module>APIService</module>
     </modules>
 

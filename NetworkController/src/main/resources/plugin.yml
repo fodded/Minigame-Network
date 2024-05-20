@@ -1,0 +1,3 @@
+name: ProxyLoadBalancer
+version: '${project.version}'
+main: me.fodded.proxyloadbalancer.ProxyLoadBalancer

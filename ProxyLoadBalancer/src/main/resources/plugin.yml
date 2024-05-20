@@ -1,0 +1,4 @@
+name: ProxyLoadBalancer
+version: '${project.version}'
+main: me.fodded.networkcontroller.ProxyLoadBalancer
+api-version: '1.20'

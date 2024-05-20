@@ -2,6 +2,7 @@ package me.fodded.skywarsgame.game.ranked;
 
 import me.fodded.gamemanager.AbstractGame;
 import me.fodded.gamemanager.map.info.IGameMapInfo;
+import me.fodded.gamemanager.state.game.impl.WaitState;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,7 +31,7 @@ public class RankedSkywarsGame extends AbstractGame {
 
     @Override
     public void registerGameStates() {
-        getGameStateController().registerGameState(new );
+        getGameStateController().registerGameState(new WaitState(this, "Waiting for players...", 20*10));
     }
 
     @Override

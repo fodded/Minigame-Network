@@ -2,7 +2,8 @@ package me.fodded.skywarsgame;
 
 import lombok.Getter;
 import me.fodded.common.Common;
-import me.fodded.proxyloadbalancer.servers.minigame.MinigameInstance;
+import me.fodded.proxyloadbalancer.NetworkController;
+import me.fodded.proxyloadbalancer.servers.instances.minigame.MinigameInstance;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -15,7 +16,7 @@ public class Main extends JavaPlugin {
         instance = this;
 
         MinigameInstance minigameInstance = new MinigameInstance(Common.getInstance().getServerUUID());
-        //NetworkManager.getInstance().getServerController().addServer(minigameInstance);
+        NetworkController.getInstance().getServerController().addServer(minigameInstance);
     }
 
     @Override
