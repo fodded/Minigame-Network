@@ -8,10 +8,9 @@ import java.util.UUID;
 @Getter
 public class PlayerNetworkChangeServerEvent extends Event {
 
-    private final UUID playerUUID;
-    private final String previousServer, newServer;
+    private final UUID playerUUID, previousServer, newServer;
 
-    public PlayerNetworkChangeServerEvent(UUID playerUUID, String previousServer, String newServer) {
+    public PlayerNetworkChangeServerEvent(UUID playerUUID, UUID previousServer, UUID newServer) {
         this.playerUUID = playerUUID;
         this.previousServer = previousServer;
         this.newServer = newServer;

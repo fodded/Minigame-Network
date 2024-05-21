@@ -3,6 +3,9 @@ package me.fodded.networkcontroller.listeners.redis;
 import me.fodded.common.data.statistics.transfer.IRedisListener;
 import me.fodded.networkcontroller.ProxyLoadBalancer;
 import me.fodded.networkcontroller.event.PlayerNetworkQuitEvent;
+import me.fodded.proxyloadbalancer.NetworkController;
+import me.fodded.proxyloadbalancer.info.network.NetworkInstance;
+import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
 import me.fodded.proxyloadbalancer.info.network.packets.PlayerQuitPacket;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -22,7 +25,11 @@ public class RedisPlayerQuit implements IRedisListener {
 
         Plugin plugin = ProxyLoadBalancer.getInstance();
         plugin.getProxy().getScheduler().runAsync(plugin, ()-> {
-            new PlayerNetworkQuitEvent(playerUUID);
+            NetworkInstance networkInstance = NetworkController.getInstance().getNetworkInstance();
+
+            NetworkPlayer networkPlayer = networkInstance.getNetworkPlayer(playerUUID);
+            networkInstance.untrackPlayer(networkPlayer);
+
             plugin.getProxy().getPluginManager().callEvent(new PlayerNetworkQuitEvent(playerUUID));
         });
     }

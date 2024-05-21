@@ -24,4 +24,8 @@ public class NetworkInstance {
     public void untrackPlayer(NetworkPlayer networkPlayer) {
         this.networkPlayerMap.remove(networkPlayer.getPlayerUUID());
     }
+
+    public NetworkPlayer getNetworkPlayer(UUID playerUUID) {
+        return networkPlayerMap.get(playerUUID);
+    }
 }

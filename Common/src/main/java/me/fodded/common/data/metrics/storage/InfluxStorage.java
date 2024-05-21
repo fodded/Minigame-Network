@@ -9,18 +9,13 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class InfluxStorage {
+
     private final WriteApiBlocking writeApi;
     private final InfluxDBClient client;
 
     public InfluxStorage(String url, String token, String org, String bucket) {
         this.client = InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket);
         this.writeApi = client.getWriteApiBlocking();
-    }
-
-    public CompletableFuture<Void> pushIndividual(Point point) {
-        return CompletableFuture.runAsync(() -> {
-            writeApi.writePoint(point);
-        });
     }
 
     public CompletableFuture<Void> pushBatch(List<Point> points) {
