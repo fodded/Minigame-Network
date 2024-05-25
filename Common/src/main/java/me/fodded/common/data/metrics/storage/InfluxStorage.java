@@ -19,8 +19,6 @@ public class InfluxStorage {
     }
 
     public CompletableFuture<Void> pushBatch(List<Point> points) {
-        return CompletableFuture.runAsync(() -> {
-            writeApi.writePoints(points);
-        });
+        return CompletableFuture.runAsync(() -> writeApi.writePoints(points));
     }
 }

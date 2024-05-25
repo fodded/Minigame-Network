@@ -21,8 +21,8 @@ public class ServerMetricsRegistry {
 
     private final String serverName;
 
-    public ServerMetricsRegistry(InfluxStorage influx, String serverName) {
-        this.influx = influx;
+    public ServerMetricsRegistry(InfluxStorage influxStorage, String serverName) {
+        this.influx = influxStorage;
         this.serverName = serverName;
 
         this.executorService.scheduleWithFixedDelay(this::tick, 0, QUERY_DELAY_SECONDS, TimeUnit.SECONDS);
@@ -40,7 +40,7 @@ public class ServerMetricsRegistry {
         List<Point> points = new ArrayList<>();
         for(ServerMetric metric : this.registeredMetrics.values()) {
             Point measurement = metric.measure().join();
-            measurement.addField("server", serverName);
+            measurement.addTag("server-instance", serverName);
 
             points.add(measurement);
         }

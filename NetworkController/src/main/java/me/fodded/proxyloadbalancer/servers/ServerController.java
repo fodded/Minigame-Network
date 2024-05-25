@@ -8,7 +8,8 @@ import java.util.UUID;
 
 public class ServerController {
 
-    private final RMap<UUID, ServerInstance> serverInstancesMap;
+    // server's name and server's instance
+    private final RMap<String, ServerInstance> serverInstancesMap;
     private final RedissonClient redissonClient;
 
     public ServerController(RedissonClient redissonClient) {
@@ -17,7 +18,7 @@ public class ServerController {
     }
 
     public void addServer(ServerInstance serverInstance) {
-        this.serverInstancesMap.put(serverInstance.getServerUUID(), serverInstance);
+        this.serverInstancesMap.put(serverInstance.getServerName(), serverInstance);
     }
 
     public void removeServer(UUID serverUUID) {

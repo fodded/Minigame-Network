@@ -11,9 +11,9 @@ import java.util.UUID;
 public class PlayerJoinPacket extends PacketInfo {
 
     private final UUID playerUUID;
-    private final UUID serverInstanceUUID, proxyInstanceUUID;
+    private final String serverInstanceUUID, proxyInstanceUUID;
 
-    public PlayerJoinPacket(UUID playerUUID, UUID serverInstanceUUID, UUID proxyInstanceUUID) {
+    public PlayerJoinPacket(UUID playerUUID, String serverInstanceUUID, String proxyInstanceUUID) {
         this.playerUUID = playerUUID;
         this.serverInstanceUUID = serverInstanceUUID;
         this.proxyInstanceUUID = proxyInstanceUUID;

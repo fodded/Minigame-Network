@@ -20,10 +20,10 @@ public class PlayerConnectListener implements Listener {
     public void onJoin(ServerConnectEvent event) {
         UUID playerUUID = event.getPlayer().getUniqueId();
 
-        UUID serverInstanceUUID = UUID.fromString(event.getTarget().getName());
-        UUID proxyInstanceUUID = Common.getInstance().getServerUUID();
+        String serverInstanceString = event.getTarget().getName();
+        String proxyInstanceName = Common.getInstance().getServerName();
 
-        PlayerJoinPacket playerJoinPacket = new PlayerJoinPacket(playerUUID, serverInstanceUUID, proxyInstanceUUID);
+        PlayerJoinPacket playerJoinPacket = new PlayerJoinPacket(playerUUID, serverInstanceString, proxyInstanceName);
         Common.getInstance().getRedisClient().publishMessageAsync("playerJoin", playerJoinPacket.serializePacketInfo());
     }
 

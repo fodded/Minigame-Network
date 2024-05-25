@@ -5,17 +5,16 @@ import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 public abstract class ServerInstance implements IServerInfo {
 
     // serverUUID is randomly generated in the "Common" class
-    protected final UUID serverUUID;
+    protected final String serverName;
     protected final Set<NetworkPlayer> players;
 
-    public ServerInstance(UUID serverUUID) {
-        this.serverUUID = serverUUID;
+    public ServerInstance(String serverName) {
+        this.serverName = serverName;
         this.players = new HashSet<>();
     }
 }

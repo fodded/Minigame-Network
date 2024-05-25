@@ -1,7 +1,6 @@
 package me.fodded.common.data.statistics.transfer;
 
 import lombok.Getter;
-import me.fodded.common.data.config.RedisData;
 import org.redisson.Redisson;
 import org.redisson.api.RTopic;
 import org.redisson.api.RedissonClient;
@@ -12,9 +11,9 @@ public class RedisClient {
     @Getter
     private final RedissonClient redissonClient;
 
-    public RedisClient() {
+    public RedisClient(String redisHost, int redisPort) {
         Config redisConfig = new Config();
-        redisConfig.useSingleServer().setAddress("redis://" + RedisData.REDIS_HOST + ":" + RedisData.REDIS_PORT);
+        redisConfig.useSingleServer().setAddress("redis://" + redisHost + ":" + redisPort);
         this.redissonClient = Redisson.create(redisConfig);
     }
 

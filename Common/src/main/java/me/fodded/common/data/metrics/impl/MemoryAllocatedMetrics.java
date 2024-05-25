@@ -19,11 +19,7 @@ public class MemoryAllocatedMetrics implements ServerMetric {
     public CompletableFuture<Point> measure() {
         return CompletableFuture.supplyAsync(() -> Point.measurement(getName())
                 .time(System.currentTimeMillis(), WritePrecision.MS)
-                .addField("MiB", bytesToMiB(getTotalMemory())));
-    }
-
-    public static long getTotalMemory() {
-        return Runtime.getRuntime().totalMemory();
+                .addField("MiB", bytesToMiB(Runtime.getRuntime().maxMemory())));
     }
 
     private static double bytesToMiB(long bytes) {
