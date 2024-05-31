@@ -10,6 +10,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/NetworkManager/pom.xml" />
+        <option value="$PROJECT_DIR$/ServerController/pom.xml" />
       </set>
     </option>
   </component>

@@ -11,18 +11,18 @@ import java.util.UUID;
 public class PlayerChangeServerPacket extends PacketInfo {
 
     private final UUID playerUUID;
-    private final UUID currentServerUUID, newServerUUID;
+    private final String currentServerName, newServerName;
 
-    public PlayerChangeServerPacket(UUID playerUUID, UUID currentServerUUID, UUID newServerUUID) {
+    public PlayerChangeServerPacket(UUID playerUUID, String currentServerName, String newServerName) {
         this.playerUUID = playerUUID;
-        this.currentServerUUID = currentServerUUID;
-        this.newServerUUID = newServerUUID;
+        this.currentServerName = currentServerName;
+        this.newServerName = newServerName;
     }
 
     public PlayerChangeServerPacket(String message) {
         PlayerChangeServerPacket playerChangeServerPacket = (PlayerChangeServerPacket) this.deserializePacketInfo(message, PlayerChangeServerPacket.class);
         this.playerUUID = playerChangeServerPacket.playerUUID;
-        this.currentServerUUID = playerChangeServerPacket.currentServerUUID;
-        this.newServerUUID = playerChangeServerPacket.newServerUUID;
+        this.currentServerName = playerChangeServerPacket.currentServerName;
+        this.newServerName = playerChangeServerPacket.newServerName;
     }
 }

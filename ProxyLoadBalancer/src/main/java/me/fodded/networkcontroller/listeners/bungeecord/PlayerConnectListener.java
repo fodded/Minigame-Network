@@ -1,6 +1,7 @@
 package me.fodded.networkcontroller.listeners.bungeecord;
 
-import me.fodded.common.Common;
+import me.fodded.common.ServerCommon;
+import me.fodded.networkcontroller.ProxyLoadBalancer;
 import me.fodded.proxyloadbalancer.info.network.packets.PlayerJoinPacket;
 import me.fodded.proxyloadbalancer.info.network.packets.PlayerQuitPacket;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -20,11 +21,13 @@ public class PlayerConnectListener implements Listener {
     public void onJoin(ServerConnectEvent event) {
         UUID playerUUID = event.getPlayer().getUniqueId();
 
+        ServerCommon serverCommon = ProxyLoadBalancer.getInstance().getServerCommon();
+
         String serverInstanceString = event.getTarget().getName();
-        String proxyInstanceName = Common.getInstance().getServerName();
+        String proxyInstanceName = ServerCommon.getInstance().getServerName();
 
         PlayerJoinPacket playerJoinPacket = new PlayerJoinPacket(playerUUID, serverInstanceString, proxyInstanceName);
-        Common.getInstance().getRedisClient().publishMessageAsync("playerJoin", playerJoinPacket.serializePacketInfo());
+        ServerCommon.getInstance().getRedisClient().publishMessageAsync("playerJoin", playerJoinPacket.serializePacketInfo());
     }
 
     @EventHandler
@@ -32,6 +35,6 @@ public class PlayerConnectListener implements Listener {
         UUID playerUUID = event.getPlayer().getUniqueId();
 
         PlayerQuitPacket playerQuitPacket = new PlayerQuitPacket(playerUUID);
-        Common.getInstance().getRedisClient().publishMessageAsync("playerQuit", playerQuitPacket.serializePacketInfo());
+        ServerCommon.getInstance().getRedisClient().publishMessageAsync("playerQuit", playerQuitPacket.serializePacketInfo());
     }
 }

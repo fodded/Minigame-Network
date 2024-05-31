@@ -1,8 +1,11 @@
 package me.fodded.networkcontroller;
 
 import lombok.Getter;
-import me.fodded.common.Common;
+import me.fodded.common.ServerBuilder;
+import me.fodded.common.ServerCommon;
+import me.fodded.common.data.metrics.storage.InfluxStorage;
 import me.fodded.common.data.statistics.transfer.RedisClient;
+import me.fodded.networkcontroller.data.storages.ProxyStorageController;
 import me.fodded.networkcontroller.listeners.bungeecord.PlayerConnectListener;
 import me.fodded.networkcontroller.listeners.redis.RedisPlayerChangeServer;
 import me.fodded.networkcontroller.listeners.redis.RedisPlayerJoin;
@@ -14,7 +17,7 @@ import net.md_5.bungee.api.plugin.PluginManager;
 /**
  * ProxyLoadBalancer was invented to handle multiple proxy connections and synchronize them.
  *
- * Generally saying, ProxyLoadBalancer is a bare-bone API and ProxyLoadBalancer is using this API to
+ * Generally saying, NetworkController is a bare-bone API and ProxyLoadBalancer is using this API to
  * manage different proxies, to make it looks like one big network
  */
 @Getter
@@ -23,13 +26,26 @@ public class ProxyLoadBalancer extends Plugin {
     @Getter
     private static ProxyLoadBalancer instance;
 
+    private ServerCommon serverCommon;
+
     /**
      * We need to initialzi
      */
     @Override
     public void onEnable() {
         instance = this;
-        RedisClient redisClient = Common.getInstance().getRedisClient();
+
+        ProxyStorageController proxyStorageController = new ProxyStorageController();
+        InfluxStorage influxStorage = new InfluxStorage("", "", "", "");
+
+        serverCommon = new ServerBuilder()
+                .initialize("proxy-1")
+                .initializeDataStorage(proxyStorageController)
+                .initializeRedis("localhost", 6379)
+                .initializeMetrics(influxStorage)
+                .build();
+
+        RedisClient redisClient = serverCommon.getRedisClient();
 
         initializeRedisListeners(redisClient);
         initializeProxyListeners();
@@ -50,6 +66,6 @@ public class ProxyLoadBalancer extends Plugin {
 
     @Override
     public void onDisable() {
-        //TODO: remove server from tracker
+        NetworkController.getInstance().getServerController().removeServer("proxy-1");
     }
 }

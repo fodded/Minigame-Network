@@ -2,10 +2,12 @@ package me.fodded.proxyloadbalancer.servers.instances.lobby;
 
 import me.fodded.proxyloadbalancer.servers.instances.ServerInstance;
 
+import java.net.InetSocketAddress;
+
 public class LobbyInstance extends ServerInstance {
 
-    public LobbyInstance(String serverName) {
-        super(serverName);
+    public LobbyInstance(String serverName, InetSocketAddress serverAddress) {
+        super(serverName, serverAddress);
     }
 
     @Override

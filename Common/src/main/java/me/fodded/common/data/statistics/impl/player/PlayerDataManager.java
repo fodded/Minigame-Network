@@ -1,9 +1,10 @@
 package me.fodded.common.data.statistics.impl.player;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
-import me.fodded.common.Common;
+import me.fodded.common.ServerCommon;
 import me.fodded.common.data.statistics.DataManager;
 import me.fodded.common.data.statistics.storage.impl.player.IPlayerDataStorage;
+import me.fodded.common.data.statistics.storage.impl.player.PlayerMongoStorage;
 import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
 import me.fodded.proxyloadbalancer.info.network.NetworkPlayerController;
 
@@ -29,11 +30,10 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
     /**
      * If the data is not present in local cache,
      * it's either retrieved from redis or from persistent database,
-     * depending on where it's present at this moment
-     *
+     * depending on where it's present at this moment.
+     * <p>
      * The method is used to put data in cache if it was not found anywhere
      */
-    @SuppressWarnings("unchecked")
     private CompletableFuture<V> loadPlayerData(K key, Executor executor) {
         return CompletableFuture.supplyAsync(() -> getRemotePlayerData(key), executor);
     }
@@ -53,7 +53,7 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
         return CompletableFuture.runAsync(() -> {
             V playerData = getRemotePlayerData(key);
 
-            IPlayerDataStorage<V> playerDataStorage = Common.getInstance().getDataStorageController().getPlayerDataStorage();
+            IPlayerDataStorage<V> playerDataStorage = ServerCommon.getInstance().getAbstractStorageController().getStorageType(PlayerMongoStorage.class);
             playerDataStorage.saveData(playerData);
         }, EXECUTOR_SERVICE);
     }
@@ -61,20 +61,21 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
     /**
      * The data is removed from redis and local cache after delay,
      * In case the player is still present on the server, the data is not removed
-     *
+     * <p>
      * We want to keep data temporarily to make sure that the data does not have to be loaded again
      * When a player is trying to reconnect immediately
+     * <p>
+     * If the player is still on the network, but just switching servers,
+     * then we want to remove local cache data, but keep the shared redis data
      */
-    public CompletableFuture<Void> invalidatePlayerData(K key, int delaySeconds) {
-        return CompletableFuture.runAsync(() -> EXECUTOR_SERVICE.schedule(() -> {
+    public void invalidatePlayerData(K key, int delaySeconds) {
+        invalidateLocalData(key);
+        SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
             NetworkPlayer networkPlayer = NetworkPlayerController.getInstance().findNetworkPlayer(key);
-            if(networkPlayer != null) {
-                return;
+            if (networkPlayer == null) {
+                invalidateRemoteCache(key);
             }
-
-            invalidateLocalData(key);
-            invalidateRemoteCache(key);
-        }, delaySeconds, TimeUnit.SECONDS), EXECUTOR_SERVICE);
+        }, delaySeconds, TimeUnit.SECONDS);
     }
 
     private void updateCacheData(K key, V data, Consumer<V> consumerAction) {
@@ -84,20 +85,18 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
         localCache.synchronous().refresh(key);
     }
 
-    @SuppressWarnings("unchecked")
     private void updatePersistentData(V data) {
-        IPlayerDataStorage<V> playerDataStorage = Common.getInstance().getDataStorageController().getPlayerDataStorage();
+        IPlayerDataStorage<V> playerDataStorage = ServerCommon.getInstance().getAbstractStorageController().getStorageType(IPlayerDataStorage.class);
         playerDataStorage.saveData(data);
     }
 
-    @SuppressWarnings("unchecked")
     private V getRemotePlayerData(K key) {
         V redissonValue = redisCache.get(key);
         if(redissonValue != null) {
             return redissonValue;
         }
 
-        IPlayerDataStorage<V> playerDataStorage = Common.getInstance().getDataStorageController().getPlayerDataStorage();
+        IPlayerDataStorage<V> playerDataStorage = ServerCommon.getInstance().getAbstractStorageController().getStorageType(IPlayerDataStorage.class);
         V defaultPlayerData = defaultData.apply(key);
 
         return playerDataStorage.loadData(key, defaultPlayerData).join();

@@ -8,11 +8,11 @@ import java.util.UUID;
 public class NetworkPlayer {
 
     private final UUID playerUUID;
-    private UUID serverInstanceId, proxyInstanceId;
+    private String serverInstanceName, proxyInstanceName;
 
-    public NetworkPlayer(UUID playerUUID, UUID serverInstanceId, UUID proxyInstanceId) {
+    public NetworkPlayer(UUID playerUUID, String serverInstanceName, String proxyInstanceName) {
         this.playerUUID = playerUUID;
-        this.serverInstanceId = serverInstanceId;
-        this.proxyInstanceId = proxyInstanceId;
+        this.serverInstanceName = serverInstanceName;
+        this.proxyInstanceName = proxyInstanceName;
     }
 }

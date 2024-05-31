@@ -11,18 +11,18 @@ import java.util.UUID;
 public class PlayerJoinPacket extends PacketInfo {
 
     private final UUID playerUUID;
-    private final String serverInstanceUUID, proxyInstanceUUID;
+    private final String serverInstanceName, proxyInstanceName;
 
-    public PlayerJoinPacket(UUID playerUUID, String serverInstanceUUID, String proxyInstanceUUID) {
+    public PlayerJoinPacket(UUID playerUUID, String serverInstanceName, String proxyInstanceName) {
         this.playerUUID = playerUUID;
-        this.serverInstanceUUID = serverInstanceUUID;
-        this.proxyInstanceUUID = proxyInstanceUUID;
+        this.serverInstanceName = serverInstanceName;
+        this.proxyInstanceName = proxyInstanceName;
     }
 
     public PlayerJoinPacket(String message) {
         PlayerJoinPacket playerJoinPacket = (PlayerJoinPacket) this.deserializePacketInfo(message, PlayerJoinPacket.class);
         this.playerUUID = playerJoinPacket.playerUUID;
-        this.serverInstanceUUID = playerJoinPacket.serverInstanceUUID;
-        this.proxyInstanceUUID = playerJoinPacket.proxyInstanceUUID;
+        this.serverInstanceName = playerJoinPacket.serverInstanceName;
+        this.proxyInstanceName = playerJoinPacket.proxyInstanceName;
     }
 }

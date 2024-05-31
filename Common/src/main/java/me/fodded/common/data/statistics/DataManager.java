@@ -2,10 +2,11 @@ package me.fodded.common.data.statistics;
 
 import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.google.common.reflect.TypeToken;
-import me.fodded.common.Common;
+import me.fodded.common.ServerCommon;
 import org.redisson.api.RMap;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
@@ -18,7 +19,8 @@ public abstract class DataManager<K, V> implements IDataName {
     protected final Function<K, V> defaultData;
     protected final Class<V> dataClass;
 
-    protected static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
+    protected static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+    protected static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
     @SuppressWarnings("unchecked")
     public DataManager(Function<K, V> defaultData) {
@@ -26,7 +28,7 @@ public abstract class DataManager<K, V> implements IDataName {
         this.dataClass = (Class<V>) typeToken.getRawType();
         this.defaultData = defaultData;
 
-        this.redisCache = Common.getInstance().getRedisClient().getRedissonClient().getMap(this.dataClass.getSimpleName());
+        this.redisCache = ServerCommon.getInstance().getRedisClient().getRedissonClient().getMap(this.dataClass.getSimpleName());
     }
 
     /**

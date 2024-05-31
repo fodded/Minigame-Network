@@ -25,13 +25,13 @@ public class PlayerMongoStorage<T extends AbstractPlayerData> extends MongoStora
     @SuppressWarnings("unchecked")
     @Override
     public CompletableFuture<T> loadData(UUID uuid, T playerDataClass) {
-        return (CompletableFuture<T>) CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             Document foundDocument = playersCollection.find(Filters.eq("uuid", uuid.toString())).first();
             if(foundDocument == null) {
                 return playerDataClass;
             }
 
-            return GSON.fromJson(foundDocument.toJson(), playerDataClass.getClass());
+            return (T) GSON.fromJson(foundDocument.toJson(), playerDataClass.getClass());
         });
     }
 

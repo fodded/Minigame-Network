@@ -14,7 +14,7 @@ public class NetworkPlayerController {
         return NetworkController.getInstance().getNetworkInstance().getNetworkPlayerMap().get(playerUUID);
     }
 
-    public void changePlayerServer(NetworkPlayer networkPlayer, UUID serverUUID) {
-        networkPlayer.setServerInstanceId(serverUUID);
+    public void changePlayerServer(NetworkPlayer networkPlayer, String serverName) {
+        networkPlayer.setServerInstanceName(serverName);
     }
 }

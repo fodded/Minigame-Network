@@ -3,12 +3,11 @@ package me.fodded.proxyloadbalancer.servers.instances;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.net.InetSocketAddress;
-import java.util.UUID;
 
 public class ProxyInstance extends ServerInstance {
 
-    public ProxyInstance(UUID proxyUUID) {
-        super(proxyUUID);
+    public ProxyInstance(String serverName, InetSocketAddress serverAddress) {
+        super(serverName, serverAddress);
     }
 
     public void addServer(String serverName, InetSocketAddress address, String serverMotd, boolean restricted) {

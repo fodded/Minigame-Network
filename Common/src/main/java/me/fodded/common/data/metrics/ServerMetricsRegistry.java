@@ -25,7 +25,7 @@ public class ServerMetricsRegistry {
         this.influx = influxStorage;
         this.serverName = serverName;
 
-        this.executorService.scheduleWithFixedDelay(this::tick, 0, QUERY_DELAY_SECONDS, TimeUnit.SECONDS);
+        executorService.scheduleWithFixedDelay(this::tick, 0, QUERY_DELAY_SECONDS, TimeUnit.SECONDS);
     }
 
     public void registerMetric(ServerMetric metric) {
