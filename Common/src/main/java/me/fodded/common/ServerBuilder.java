@@ -16,7 +16,7 @@ public class ServerBuilder {
     private final ServerCommon serverCommon;
 
     public ServerBuilder() {
-        serverCommon = ServerCommon.getInstance();
+        this.serverCommon = ServerCommon.getInstance();
     }
 
     public ServerBuilder initialize(String serverName) {

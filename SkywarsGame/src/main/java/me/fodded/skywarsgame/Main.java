@@ -6,6 +6,7 @@ import me.fodded.common.ServerCommon;
 import me.fodded.common.data.metrics.storage.InfluxStorage;
 import me.fodded.proxyloadbalancer.NetworkController;
 import me.fodded.proxyloadbalancer.servers.instances.minigame.MinigameInstance;
+import me.fodded.skywarsgame.data.storages.SkywarsStorageController;
 import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,11 +26,9 @@ public class Main extends JavaPlugin {
 
         // TODO: initialize config and then retrieve information from there to put actual data in the influxStorage and ServerCommon
         InfluxStorage influxStorage = new InfluxStorage("", "", "", "");
-        SkywarsStorageController skywarsStorageController = new SkywarsStorageController();
-
         this.serverCommon = new ServerBuilder()
                 .initialize("skywarsgame-server-1")
-                .initializeDataStorage(skywarsStorageController)
+                .initializeDataStorage(new SkywarsStorageController())
                 .initializeRedis("localhost", 6379)
                 .initializeMetrics(influxStorage)
                 .build();

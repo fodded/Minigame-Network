@@ -3,8 +3,8 @@ package me.fodded.common.data.statistics.impl.player;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import me.fodded.common.ServerCommon;
 import me.fodded.common.data.statistics.DataManager;
+import me.fodded.common.data.statistics.GlobalDataRegistry;
 import me.fodded.common.data.statistics.storage.impl.player.IPlayerDataStorage;
-import me.fodded.common.data.statistics.storage.impl.player.PlayerMongoStorage;
 import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
 import me.fodded.proxyloadbalancer.info.network.NetworkPlayerController;
 
@@ -48,12 +48,11 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
         }, EXECUTOR_SERVICE);
     }
 
-    @SuppressWarnings("unchecked")
     public CompletableFuture<Void> savePlayerData(K key) {
         return CompletableFuture.runAsync(() -> {
             V playerData = getRemotePlayerData(key);
 
-            IPlayerDataStorage<V> playerDataStorage = ServerCommon.getInstance().getAbstractStorageController().getStorageType(PlayerMongoStorage.class);
+            IPlayerDataStorage<V> playerDataStorage = ServerCommon.getInstance().getAbstractStorageController().getStorageType(IPlayerDataStorage.class);
             playerDataStorage.saveData(playerData);
         }, EXECUTOR_SERVICE);
     }

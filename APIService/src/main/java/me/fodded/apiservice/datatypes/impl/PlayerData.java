@@ -5,7 +5,7 @@ import me.fodded.apiservice.datatypes.AbstractData;
 import me.fodded.apiservice.exceptions.InvalidKeyException;
 import me.fodded.apiservice.exceptions.InvalidStatsRequestException;
 import me.fodded.common.data.statistics.DataManager;
-import me.fodded.common.data.statistics.impl.player.GlobalDataRegistry;
+import me.fodded.common.data.statistics.GlobalDataRegistry;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

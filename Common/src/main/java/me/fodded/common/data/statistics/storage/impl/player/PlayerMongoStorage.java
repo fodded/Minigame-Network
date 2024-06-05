@@ -11,6 +11,7 @@ import org.bson.Document;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+// TODO: pass url in the class constructor to connect to the mongoClient
 public class PlayerMongoStorage<T extends AbstractPlayerData> extends MongoStorage implements IPlayerDataStorage<T> {
 
     private MongoCollection<Document> playersCollection;

@@ -7,6 +7,7 @@ import me.fodded.proxyloadbalancer.NetworkController;
 import me.fodded.proxyloadbalancer.info.network.NetworkInstance;
 import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
 import me.fodded.proxyloadbalancer.info.network.packets.PlayerQuitPacket;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.UUID;
@@ -24,13 +25,15 @@ public class RedisPlayerQuit implements IRedisListener {
         UUID playerUUID = playerQuitPacket.getPlayerUUID();
 
         Plugin plugin = ProxyLoadBalancer.getInstance();
-        plugin.getProxy().getScheduler().runAsync(plugin, ()-> {
+        ProxyServer proxy = plugin.getProxy();
+
+        proxy.getScheduler().runAsync(plugin, ()-> {
             NetworkInstance networkInstance = NetworkController.getInstance().getNetworkInstance();
 
             NetworkPlayer networkPlayer = networkInstance.getNetworkPlayer(playerUUID);
             networkInstance.untrackPlayer(networkPlayer);
 
-            plugin.getProxy().getPluginManager().callEvent(new PlayerNetworkQuitEvent(playerUUID));
+            proxy.getPluginManager().callEvent(new PlayerNetworkQuitEvent(playerUUID));
         });
     }
 }

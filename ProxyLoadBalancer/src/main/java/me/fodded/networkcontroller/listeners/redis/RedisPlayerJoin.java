@@ -6,6 +6,7 @@ import me.fodded.networkcontroller.event.PlayerNetworkJoinEvent;
 import me.fodded.proxyloadbalancer.NetworkController;
 import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
 import me.fodded.proxyloadbalancer.info.network.packets.PlayerJoinPacket;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 /**
@@ -19,11 +20,13 @@ public class RedisPlayerJoin implements IRedisListener {
         PlayerJoinPacket playerJoinPacket = new PlayerJoinPacket(message);
 
         Plugin plugin = ProxyLoadBalancer.getInstance();
-        plugin.getProxy().getScheduler().runAsync(plugin, ()-> {
+        ProxyServer proxy = plugin.getProxy();
+
+        proxy.getScheduler().runAsync(plugin, ()-> {
             NetworkPlayer networkPlayer = new NetworkPlayer(playerJoinPacket.getPlayerUUID(), playerJoinPacket.getServerInstanceName(), playerJoinPacket.getProxyInstanceName());
             NetworkController.getInstance().getNetworkInstance().trackPlayer(networkPlayer);
 
-            plugin.getProxy().getPluginManager().callEvent(new PlayerNetworkJoinEvent(playerJoinPacket.getPlayerUUID()));
+            proxy.getPluginManager().callEvent(new PlayerNetworkJoinEvent(playerJoinPacket.getPlayerUUID()));
         });
     }
 }
