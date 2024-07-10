@@ -4,8 +4,8 @@ import me.fodded.common.data.statistics.transfer.IRedisListener;
 import me.fodded.networkcontroller.ProxyLoadBalancer;
 import me.fodded.networkcontroller.event.PlayerNetworkJoinEvent;
 import me.fodded.proxyloadbalancer.NetworkController;
-import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
-import me.fodded.proxyloadbalancer.info.network.packets.PlayerJoinPacket;
+import me.fodded.proxyloadbalancer.info.network.info.packets.PlayerJoinPacket;
+import me.fodded.proxyloadbalancer.info.network.info.player.NetworkPlayer;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 

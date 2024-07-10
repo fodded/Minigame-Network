@@ -2,8 +2,9 @@ package me.fodded.networkcontroller.listeners.bungeecord;
 
 import me.fodded.common.ServerCommon;
 import me.fodded.networkcontroller.ProxyLoadBalancer;
-import me.fodded.proxyloadbalancer.info.network.packets.PlayerJoinPacket;
-import me.fodded.proxyloadbalancer.info.network.packets.PlayerQuitPacket;
+import me.fodded.proxyloadbalancer.NetworkController;
+import me.fodded.proxyloadbalancer.info.network.info.packets.PlayerJoinPacket;
+import me.fodded.proxyloadbalancer.info.network.info.packets.PlayerQuitPacket;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 
 /**
- * Here we let other servers know that a player left the proxyloadbalancer, and we should do appropriate calculations
+ * Here we let other servers know that a player left the proxyloadbalancer, and we should complete appropriate calculations
  */
 public class PlayerConnectListener implements Listener {
 
@@ -24,10 +25,18 @@ public class PlayerConnectListener implements Listener {
         ServerCommon serverCommon = ProxyLoadBalancer.getInstance().getServerCommon();
 
         String serverInstanceString = event.getTarget().getName();
-        String proxyInstanceName = ServerCommon.getInstance().getServerName();
+        String proxyInstanceName = serverCommon.getServerName();
 
         PlayerJoinPacket playerJoinPacket = new PlayerJoinPacket(playerUUID, serverInstanceString, proxyInstanceName);
-        ServerCommon.getInstance().getRedisClient().publishMessageAsync("playerJoin", playerJoinPacket.serializePacketInfo());
+        serverCommon.getRedisClient().publishMessageAsync("playerJoin", playerJoinPacket.serializePacketInfo());
+
+        // TODO: remove it later, left it here for testing purposes
+        NetworkController networkController = NetworkController.getInstance();
+        networkController.getNetworkInstance().getNetworkPlayer(playerUUID).ifPresent(networkPlayer -> {
+            networkController.getGameInstanceFinderFactory().getInstance("ranked_normal").ifPresent(abstractGameInstance -> {
+                networkPlayer.sendToServer(abstractGameInstance.findServerInstance(networkPlayer).getServerName());
+            });
+        });
     }
 
     @EventHandler

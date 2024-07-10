@@ -5,8 +5,8 @@ import me.fodded.common.ServerCommon;
 import me.fodded.common.data.statistics.DataManager;
 import me.fodded.common.data.statistics.GlobalDataRegistry;
 import me.fodded.common.data.statistics.storage.impl.player.IPlayerDataStorage;
-import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
-import me.fodded.proxyloadbalancer.info.network.NetworkPlayerController;
+import me.fodded.proxyloadbalancer.NetworkController;
+import me.fodded.proxyloadbalancer.info.network.NetworkInstance;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -70,10 +70,10 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
     public void invalidatePlayerData(K key, int delaySeconds) {
         invalidateLocalData(key);
         SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
-            NetworkPlayer networkPlayer = NetworkPlayerController.getInstance().findNetworkPlayer(key);
-            if (networkPlayer == null) {
+            NetworkInstance networkInstance = NetworkController.getInstance().getNetworkInstance();
+            networkInstance.getNetworkPlayer(key).ifPresent(networkPlayer -> {
                 invalidateRemoteCache(key);
-            }
+            });
         }, delaySeconds, TimeUnit.SECONDS);
     }
 

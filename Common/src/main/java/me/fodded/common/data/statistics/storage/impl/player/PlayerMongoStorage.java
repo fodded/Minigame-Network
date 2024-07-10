@@ -3,7 +3,6 @@ package me.fodded.common.data.statistics.storage.impl.player;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-import me.fodded.common.data.config.DatabaseData;
 import me.fodded.common.data.statistics.impl.player.AbstractPlayerData;
 import me.fodded.common.data.statistics.storage.impl.MongoStorage;
 import org.bson.Document;
@@ -11,7 +10,6 @@ import org.bson.Document;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-// TODO: pass url in the class constructor to connect to the mongoClient
 public class PlayerMongoStorage<T extends AbstractPlayerData> extends MongoStorage implements IPlayerDataStorage<T> {
 
     private MongoCollection<Document> playersCollection;
@@ -20,7 +18,9 @@ public class PlayerMongoStorage<T extends AbstractPlayerData> extends MongoStora
     @Override
     public void initialize() {
         this.connect();
-        this.playersCollection = mongoClient.getDatabase(DatabaseData.STATISTICS_DATABASE).getCollection("playerStatistics");
+        this.playersCollection = mongoClient
+                .getDatabase(System.getenv("STATISTICS_DATABASE_NAME "))
+                .getCollection("playerStatistics");
     }
 
     @SuppressWarnings("unchecked")

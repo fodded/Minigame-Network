@@ -6,7 +6,6 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import me.fodded.common.data.config.DatabaseData;
 import me.fodded.common.data.statistics.storage.IDataStorage;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -20,7 +19,7 @@ public class MongoStorage implements IDataStorage {
 
     @Override
     public final void connect() {
-        ConnectionString connectionString = new ConnectionString(DatabaseData.MONGODB_CONNECTION_URL + "?uuidRepresentation=STANDARD");
+        ConnectionString connectionString = new ConnectionString(System.getenv("MONGODB_CONNECTION_URL") + "?uuidRepresentation=STANDARD");
         CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 pojoCodecRegistry);

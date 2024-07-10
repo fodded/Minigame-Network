@@ -1,5 +1,6 @@
 package me.fodded.gamemanager.tracker;
 
+import com.google.common.collect.Sets;
 import me.fodded.gamemanager.AbstractGame;
 import me.fodded.gamemanager.events.impl.GamePlayerAddEvent;
 import me.fodded.gamemanager.events.impl.GamePlayerRemoveEvent;
@@ -32,5 +33,9 @@ public class GamePlayerTracker {
 
     public boolean isPlayerInGame(UUID playerUniqueId) {
         return this.gamePlayers.contains(playerUniqueId);
+    }
+
+    public Set<UUID> getGamePlayers() {
+        return Sets.newHashSet(gamePlayers);
     }
 }

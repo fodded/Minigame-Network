@@ -11,7 +11,7 @@ public class PlayersOnlineMetrics implements ServerMetric {
 
     @Override
     public String getName() {
-        return "tps";
+        return "online_players";
     }
 
     @Override

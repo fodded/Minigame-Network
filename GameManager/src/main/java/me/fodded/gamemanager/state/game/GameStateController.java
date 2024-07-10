@@ -43,6 +43,10 @@ public class GameStateController {
         return gameStatesList.get(currentIndex + 1);
     }
 
+    public int getCurrentStateIndex() {
+        return gameStatesList.indexOf((currentGameState));
+    }
+
     @SafeVarargs
     public final boolean isCurrentState(Class<? extends AbstractGameState>... gameStateClasses) {
         for(Class<? extends AbstractGameState> gameStateClass : gameStateClasses) {

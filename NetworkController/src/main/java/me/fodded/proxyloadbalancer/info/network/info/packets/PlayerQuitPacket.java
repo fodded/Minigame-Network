@@ -1,4 +1,4 @@
-package me.fodded.proxyloadbalancer.info.network.packets;
+package me.fodded.proxyloadbalancer.info.network.info.packets;
 
 import lombok.Getter;
 

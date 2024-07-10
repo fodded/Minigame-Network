@@ -1,6 +1,7 @@
 package me.fodded.proxyloadbalancer;
 
 import lombok.Getter;
+import me.fodded.proxyloadbalancer.info.game.GameInstanceFinderFactory;
 import me.fodded.proxyloadbalancer.info.network.NetworkInstance;
 import me.fodded.proxyloadbalancer.servers.ServerController;
 import org.redisson.api.RedissonClient;
@@ -23,10 +24,15 @@ public class NetworkController {
     private final NetworkInstance networkInstance;
     private final ServerController serverController;
 
+    private final GameInstanceFinderFactory gameInstanceFinderFactory;
+
     public NetworkController(RedissonClient redissonClient) {
         instance = this;
 
         this.networkInstance = new NetworkInstance(redissonClient);
         this.serverController = new ServerController(redissonClient);
+
+        this.gameInstanceFinderFactory = new GameInstanceFinderFactory();
+        this.gameInstanceFinderFactory.registerInstances();
     }
 }

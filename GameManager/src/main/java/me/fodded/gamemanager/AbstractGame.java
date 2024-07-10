@@ -21,7 +21,6 @@ public abstract class AbstractGame implements IGameActions {
     protected final UUID gameId;
     protected UUID gameWorldId;
 
-    protected AbstractGameState currentGameState;
     protected IGameMapInfo gameMapInfo;
 
     protected final GameStateController gameStateController;
@@ -69,8 +68,9 @@ public abstract class AbstractGame implements IGameActions {
 
         List<AbstractGameState> gameStatesList = gameStateController.getGameStatesList();
         if(!gameStatesList.isEmpty()) {
-            setCurrentGameState(gameStatesList.get(0));
+            gameStateController.setCurrentGameState(gameStatesList.get(0));
         }
+
         // TODO: add game to the game instance tracker
     }
 

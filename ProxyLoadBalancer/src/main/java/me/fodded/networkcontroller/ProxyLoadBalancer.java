@@ -28,20 +28,25 @@ public class ProxyLoadBalancer extends Plugin {
 
     private ServerCommon serverCommon;
 
-    /**
-     * We need to initialzi
-     */
     @Override
     public void onEnable() {
         instance = this;
 
-        ProxyStorageController proxyStorageController = new ProxyStorageController();
-        InfluxStorage influxStorage = new InfluxStorage("", "", "", "");
+        InfluxStorage influxStorage = new InfluxStorage(
+                System.getenv("INFLUX_URL"),
+                System.getenv("INFLUX_TOKEN"),
+                System.getenv("INFLUX_ORG"),
+                System.getenv("INFLUX_BUCKET")
+        );
 
+        // TODO: initialize special metrics for proxy
         serverCommon = new ServerBuilder()
-                .initialize("proxy-1")
-                .initializeDataStorage(proxyStorageController)
-                .initializeRedis("localhost", 6379)
+                .initialize(System.getenv("SERVER_INSTANCE_NAME"))
+                .initializeDataStorage(new ProxyStorageController())
+                .initializeRedis(
+                        System.getenv("REDIS_CONNECTION_ADDRESS"),
+                        Integer.parseInt(System.getenv("REDIS_CONNECTION_PORT"))
+                )
                 .initializeMetrics(influxStorage)
                 .build();
 
@@ -66,6 +71,6 @@ public class ProxyLoadBalancer extends Plugin {
 
     @Override
     public void onDisable() {
-        NetworkController.getInstance().getServerController().removeServer("proxy-1");
+        NetworkController.getInstance().getServerController().removeServerInstance("proxy-1");
     }
 }

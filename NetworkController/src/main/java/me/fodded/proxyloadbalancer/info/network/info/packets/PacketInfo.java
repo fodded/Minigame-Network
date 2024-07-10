@@ -1,4 +1,4 @@
-package me.fodded.proxyloadbalancer.info.network.packets;
+package me.fodded.proxyloadbalancer.info.network.info.packets;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;

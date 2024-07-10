@@ -1,7 +1,7 @@
 package me.fodded.proxyloadbalancer.servers.instances;
 
 import lombok.Getter;
-import me.fodded.proxyloadbalancer.info.network.NetworkPlayer;
+import me.fodded.proxyloadbalancer.info.network.info.player.NetworkPlayer;
 
 import java.net.InetSocketAddress;
 import java.util.HashSet;
