@@ -11,7 +11,8 @@ public abstract class AbstractGameMechanic {
 
     protected final AbstractGame game;
 
-    @Setter @Getter
+    @Setter
+    @Getter
     private boolean enabled;
 
     public AbstractGameMechanic(AbstractGame game) {
@@ -22,6 +23,7 @@ public abstract class AbstractGameMechanic {
     }
 
     public abstract void setup();
+
     public boolean enabledByDefault() {
         return true;
     }

@@ -12,7 +12,7 @@ public class ProxyInstance extends ServerInstance {
 
     public void addServer(String serverName, InetSocketAddress address, String serverMotd, boolean restricted) {
         ProxyServer proxyServer = ProxyServer.getInstance();
-        if(ProxyServer.getInstance().getServers().containsKey(serverName)) {
+        if (proxyServer.getServers().containsKey(serverName)) {
             return;
         }
 

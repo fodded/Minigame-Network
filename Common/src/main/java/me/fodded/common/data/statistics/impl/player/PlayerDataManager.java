@@ -5,8 +5,7 @@ import me.fodded.common.ServerCommon;
 import me.fodded.common.data.statistics.DataManager;
 import me.fodded.common.data.statistics.GlobalDataRegistry;
 import me.fodded.common.data.statistics.storage.impl.player.IPlayerDataStorage;
-import me.fodded.proxyloadbalancer.NetworkController;
-import me.fodded.proxyloadbalancer.info.network.NetworkInstance;
+import org.redisson.api.RMap;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -18,13 +17,19 @@ import java.util.function.Function;
 
 public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayerData> extends DataManager<K, V> {
 
+    // UUID, NetworkPlayer (We can't access NetworkPlayer from this module)
+    private static RMap<UUID, ?> networkPlayersMap;
+
     public PlayerDataManager(Function<K, V> defaultData) {
         super(defaultData);
         localCache = Caffeine.newBuilder()
-                .expireAfterWrite(Duration.ofMinutes(5))
+                .expireAfterWrite(Duration.ofMinutes(15))
                 .buildAsync(this::loadPlayerData);
 
         GlobalDataRegistry.getInstance().registerData(this);
+
+        if (networkPlayersMap != null) return;
+        networkPlayersMap = ServerCommon.getInstance().getRedisClient().getRedissonClient().getMap("networkPlayerMap");
     }
 
     /**
@@ -38,9 +43,16 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
         return CompletableFuture.supplyAsync(() -> getRemotePlayerData(key), executor);
     }
 
+    /**
+     * Saves the player's data either in local cache and redis, or in a database, depending on where the data is initially present
+     *
+     * @param key the key based on which you get the data and save it
+     * @param consumerAction an action to change data however you want and save after it
+     * @return A CompletableFuture after the data has been completely processed
+     */
     public CompletableFuture<Void> updateData(K key, Consumer<V> consumerAction) {
         return getData(key, true).thenAcceptAsync(data -> {
-            if(redisCache.containsKey(key)) {
+            if (redisCache.containsKey(key)) {
                 updateCacheData(key, data, consumerAction);
             } else {
                 updatePersistentData(data);
@@ -48,7 +60,14 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
         }, EXECUTOR_SERVICE);
     }
 
-    public CompletableFuture<Void> savePlayerData(K key) {
+    /**
+     * Saves the player's data and then after some period removes it from cache, if the player is not on the server anymore
+     *
+     * @param key the key based on which you get the data and save it
+     * @param delaySeconds how many seconds has to pass, to invalidate data from cache, usually around 60 is fine
+     * @return A CompletableFuture after the data has been completely processed
+     */
+    public CompletableFuture<Void> savePlayerData(K key, int delaySeconds) {
         return CompletableFuture.runAsync(() -> {
             V playerData = getRemotePlayerData(key);
 
@@ -63,17 +82,13 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
      * <p>
      * We want to keep data temporarily to make sure that the data does not have to be loaded again
      * When a player is trying to reconnect immediately
-     * <p>
-     * If the player is still on the network, but just switching servers,
-     * then we want to remove local cache data, but keep the shared redis data
      */
     public void invalidatePlayerData(K key, int delaySeconds) {
-        invalidateLocalData(key);
         SCHEDULED_EXECUTOR_SERVICE.schedule(() -> {
-            NetworkInstance networkInstance = NetworkController.getInstance().getNetworkInstance();
-            networkInstance.getNetworkPlayer(key).ifPresent(networkPlayer -> {
+            if (!networkPlayersMap.containsKey(key)) {
+                invalidateLocalData(key);
                 invalidateRemoteCache(key);
-            });
+            }
         }, delaySeconds, TimeUnit.SECONDS);
     }
 
@@ -81,7 +96,7 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
         consumerAction.accept(data);
 
         redisCache.put(key, data);
-        localCache.synchronous().refresh(key);
+        localCache.synchronous().put(key, data);
     }
 
     private void updatePersistentData(V data) {
@@ -91,7 +106,7 @@ public abstract class PlayerDataManager<K extends UUID, V extends AbstractPlayer
 
     private V getRemotePlayerData(K key) {
         V redissonValue = redisCache.get(key);
-        if(redissonValue != null) {
+        if (redissonValue != null) {
             return redissonValue;
         }
 

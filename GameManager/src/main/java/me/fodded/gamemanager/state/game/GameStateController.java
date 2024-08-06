@@ -20,7 +20,7 @@ public class GameStateController {
     }
 
     public void setCurrentGameState(AbstractGameState gameState) {
-        if(currentGameState != null) currentGameState.endGameState();
+        if (currentGameState != null) currentGameState.endGameState();
         this.currentGameState = gameState;
 
         gameState.startGameState();
@@ -30,7 +30,7 @@ public class GameStateController {
         currentGameState.endGameState();
 
         AbstractGameState nextGameState = getNextGameState(currentGameState);
-        if(nextGameState != currentGameState) {
+        if (nextGameState != currentGameState) {
             setCurrentGameState(nextGameState);
         }
     }
@@ -49,8 +49,8 @@ public class GameStateController {
 
     @SafeVarargs
     public final boolean isCurrentState(Class<? extends AbstractGameState>... gameStateClasses) {
-        for(Class<? extends AbstractGameState> gameStateClass : gameStateClasses) {
-            if(currentGameState.getClass().equals(gameStateClass)) {
+        for (Class<? extends AbstractGameState> gameStateClass : gameStateClasses) {
+            if (currentGameState.getClass().equals(gameStateClass)) {
                 return true;
             }
         }

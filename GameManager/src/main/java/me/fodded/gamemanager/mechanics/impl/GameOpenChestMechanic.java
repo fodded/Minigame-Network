@@ -15,7 +15,7 @@ public class GameOpenChestMechanic extends AbstractGameMechanic {
     public void setup() {
         game.getEventHandler().registerEvent(PlayerInteractEvent.class, event -> {
             if (!isEnabled() && isGameEntity(event.getPlayer())) {
-                if(event.getClickedBlock().getType() != Material.CHEST) {
+                if (event.getClickedBlock().getType() != Material.CHEST) {
                     return;
                 }
 

@@ -22,7 +22,7 @@ public class RedisPlayerJoin implements IRedisListener {
         Plugin plugin = ProxyLoadBalancer.getInstance();
         ProxyServer proxy = plugin.getProxy();
 
-        proxy.getScheduler().runAsync(plugin, ()-> {
+        proxy.getScheduler().runAsync(plugin, () -> {
             NetworkPlayer networkPlayer = new NetworkPlayer(playerJoinPacket.getPlayerUUID(), playerJoinPacket.getServerInstanceName(), playerJoinPacket.getProxyInstanceName());
             NetworkController.getInstance().getNetworkInstance().trackPlayer(networkPlayer);
 

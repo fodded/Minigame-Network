@@ -16,6 +16,7 @@ public abstract class AbstractPlayerState {
     }
 
     public abstract String getName();
+
     public abstract void apply(Player player);
 
     public boolean isAppliedTo(Player player) {

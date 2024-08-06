@@ -22,7 +22,7 @@ public class RedisPlayerChangeServer implements IRedisListener {
         Plugin plugin = ProxyLoadBalancer.getInstance();
         ProxyServer proxy = plugin.getProxy();
 
-        proxy.getScheduler().runAsync(plugin, ()-> {
+        proxy.getScheduler().runAsync(plugin, () -> {
             NetworkInstance networkInstance = NetworkController.getInstance().getNetworkInstance();
             networkInstance.getNetworkPlayer(playerChangeServerPacket.getPlayerUUID()).ifPresent(networkPlayer -> {
                 networkPlayer.setServerInstanceName(playerChangeServerPacket.getNewServerName());

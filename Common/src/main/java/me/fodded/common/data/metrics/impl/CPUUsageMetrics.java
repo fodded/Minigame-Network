@@ -20,8 +20,8 @@ public class CPUUsageMetrics implements ServerMetric {
     @Override
     public CompletableFuture<Point> measure() {
         return CompletableFuture.supplyAsync(() -> Point.measurement(getName())
-                    .time(System.currentTimeMillis(), WritePrecision.MS)
-                    .addField("percent", osBean.getSystemCpuLoad() * 100)
+                .time(System.currentTimeMillis(), WritePrecision.MS)
+                .addField("percent", osBean.getSystemCpuLoad() * 100)
         );
     }
 }

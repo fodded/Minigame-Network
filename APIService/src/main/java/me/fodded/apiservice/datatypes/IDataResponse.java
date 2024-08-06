@@ -6,5 +6,6 @@ import java.util.concurrent.CompletableFuture;
 
 public interface IDataResponse {
     CompletableFuture<String> processResponse(String[] inputData) throws InvalidKeyException;
+
     String getUsageExample();
 }

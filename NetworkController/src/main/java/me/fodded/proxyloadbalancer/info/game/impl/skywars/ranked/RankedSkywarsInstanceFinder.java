@@ -18,14 +18,15 @@ public class RankedSkywarsInstanceFinder implements IGameInstanceFinder<RankedSk
     public MinigameInstance<RankedSkywarsInstance> findServerInstance(NetworkPlayer networkPlayer) {
         List<MinigameInstance<RankedSkywarsInstance>> minigameInstances = NetworkController.getInstance().getServerController().getServerInstances(MinigameInstance.class)
                 .stream()
-                .sorted(Comparator.comparingInt(instance -> instance.getPlayers().size()))
-                .filter(instance -> !instance.getServerName().equalsIgnoreCase(networkPlayer.getServerInstanceName()))
                 .filter(instance -> instance.getGameInstanceClass().equals(RankedSkywarsInstance.class))
+                .map(instance -> (MinigameInstance<RankedSkywarsInstance>) instance)
+                .filter(instance -> !instance.getServerName().equalsIgnoreCase(networkPlayer.getServerInstanceName()))
+                .sorted(Comparator.comparingInt(instance -> instance.getPlayers().size()))
                 .collect(Collectors.toList());
 
-        for(MinigameInstance<RankedSkywarsInstance> minigameInstance : minigameInstances) {
+        for (MinigameInstance<RankedSkywarsInstance> minigameInstance : minigameInstances) {
             Optional<RankedSkywarsInstance> foundRankedSkywarsInstance = findGameInstance(minigameInstance);
-            if(!foundRankedSkywarsInstance.isPresent()) continue;
+            if (!foundRankedSkywarsInstance.isPresent()) continue;
 
             ServerController serverController = NetworkController.getInstance().getServerController();
             String serverInstanceName = foundRankedSkywarsInstance.get().getInstanceServerName();

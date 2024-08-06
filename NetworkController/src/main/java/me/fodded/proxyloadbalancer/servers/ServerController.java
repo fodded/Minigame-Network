@@ -27,18 +27,19 @@ public class ServerController {
      */
     public void addServerInstance(ServerInstance serverInstance) {
         String serverName = serverInstance.getServerName();
-        if(this.serverInstancesMap.containsKey(serverName)) {
+        if (this.serverInstancesMap.containsKey(serverName)) {
             return;
         }
 
         this.serverInstancesMap.put(serverName, serverInstance);
-        if(!(serverInstance instanceof ProxyInstance)) {
-            iterateInstances(proxyInstance -> {
-                proxyInstance.addServer(serverInstance.getServerName(), serverInstance.getServerAddress(), serverInstance.getServerTypeName(), false);
-            }, ProxyInstance.class);
-        }
+        if (serverInstance instanceof ProxyInstance) return;
+
+        iterateInstances(proxyInstance -> {
+            proxyInstance.addServer(serverInstance.getServerName(), serverInstance.getServerAddress(), serverInstance.getServerTypeName(), false);
+        }, ProxyInstance.class);
     }
 
+    @SuppressWarnings("unchecked")
     public void addGameInstance(AbstractGameInstance gameInstance) {
         ServerInstance serverInstance = serverInstancesMap.get(gameInstance.getInstanceServerName());
         getServerInstance(serverInstance, MinigameInstance.class).ifPresent(minigameInstance -> {
@@ -51,11 +52,10 @@ public class ServerController {
      */
     public void removeServerInstance(String serverName) {
         this.serverInstancesMap.remove(serverName);
-        iterateInstances(proxyInstance -> {
-            proxyInstance.removeServer(serverName);
-        }, ProxyInstance.class);
+        iterateInstances(proxyInstance -> proxyInstance.removeServer(serverName), ProxyInstance.class);
     }
 
+    @SuppressWarnings("unchecked")
     public void removeGameInstance(AbstractGameInstance gameInstance) {
         ServerInstance serverInstance = serverInstancesMap.get(gameInstance.getInstanceServerName());
         getServerInstance(serverInstance, MinigameInstance.class).ifPresent(minigameInstance -> {
@@ -65,11 +65,11 @@ public class ServerController {
 
     /**
      * The method checks whether serverInstance exists based on its name, and if it does,
-     * then it down-casts the serverInstance to the serverInstanceClass and returns as an Optional,
+     * then it down-casts the serverInstance to the serverInstanceClass and returns as an Optional
      */
     @SuppressWarnings("unchecked")
     public <T extends ServerInstance> Optional<T> getServerInstance(ServerInstance serverInstance, Class<T> serverInstanceClass) {
-        if(serverInstance == null) return Optional.empty();
+        if (serverInstance == null) return Optional.empty();
         return serverInstance.getClass().equals(serverInstanceClass) ? Optional.of((T) serverInstance) : Optional.empty();
     }
 
@@ -84,13 +84,14 @@ public class ServerController {
     /**
      * iterateInstances() works like a forEach to iterate through all server instances based on their class,
      * automatically down-casting them
-     * @param consumerAction lambda perform action with down-casted serverInstance class
+     *
+     * @param consumerAction      lambda perform action with down-casted serverInstance class
      * @param serverInstanceClass class to which serverInstance must be down-casted
      */
     @SuppressWarnings("unchecked")
     public <T extends ServerInstance> void iterateInstances(Consumer<? super T> consumerAction, Class<T> serverInstanceClass) {
-        for(ServerInstance serverInstance : this.serverInstancesMap.values()) {
-            if(serverInstance.getClass() == serverInstanceClass) {
+        for (ServerInstance serverInstance : this.serverInstancesMap.values()) {
+            if (serverInstance.getClass() == serverInstanceClass) {
                 consumerAction.accept((T) serverInstance);
             }
         }

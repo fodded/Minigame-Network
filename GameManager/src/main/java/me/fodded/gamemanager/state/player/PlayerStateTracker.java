@@ -20,7 +20,7 @@ public class PlayerStateTracker implements Listener {
         String stateName = state.getName();
 
         List<String> states = playerStates.computeIfAbsent(playerId, irrelevant -> new ArrayList<>());
-        if(states.contains(stateName)) {
+        if (states.contains(stateName)) {
             return;
         }
 
@@ -51,7 +51,7 @@ public class PlayerStateTracker implements Listener {
     public Set<UUID> getPlayersFromState(AbstractPlayerState state) {
         Set<UUID> playersFromState = new HashSet<>();
         playerStates.forEach((uuid, states) -> {
-            if(states.contains(state.getName())) {
+            if (states.contains(state.getName())) {
                 playersFromState.add(uuid);
             }
         });

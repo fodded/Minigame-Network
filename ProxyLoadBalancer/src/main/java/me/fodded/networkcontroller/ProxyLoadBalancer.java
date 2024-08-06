@@ -16,7 +16,7 @@ import net.md_5.bungee.api.plugin.PluginManager;
 
 /**
  * ProxyLoadBalancer was invented to handle multiple proxy connections and synchronize them.
- *
+ * <p>
  * Generally saying, NetworkController is a bare-bone API and ProxyLoadBalancer is using this API to
  * manage different proxies, to make it looks like one big network
  */

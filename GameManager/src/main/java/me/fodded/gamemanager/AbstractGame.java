@@ -51,12 +51,14 @@ public abstract class AbstractGame implements IGameActions {
     }
 
     protected abstract void setup();
+
     protected abstract void teardown();
+
     protected abstract void registerGameMechanics();
 
     @Override
     public final void start() {
-        if(this.gameMapInfo == null) {
+        if (this.gameMapInfo == null) {
             throw new IllegalArgumentException("Game map info is null!");
         }
 
@@ -67,7 +69,7 @@ public abstract class AbstractGame implements IGameActions {
         this.setup();
 
         List<AbstractGameState> gameStatesList = gameStateController.getGameStatesList();
-        if(!gameStatesList.isEmpty()) {
+        if (!gameStatesList.isEmpty()) {
             gameStateController.setCurrentGameState(gameStatesList.get(0));
         }
 

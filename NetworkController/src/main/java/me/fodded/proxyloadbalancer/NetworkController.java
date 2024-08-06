@@ -9,7 +9,7 @@ import org.redisson.api.RedissonClient;
 /**
  * The Proxy Load Balancer is used as an alternative to redisbungee, to keep track of all the players which are connected to
  * the proxyloadbalancer. It's also intended to work as a load balancer to move players between best suiting servers
- *
+ * <p>
  * The best use case is that it does not let you in a server which is full if you're a regular player, or that it sends you
  * to a lobby which has fewer players in or more depending on the load balancing technique
  */

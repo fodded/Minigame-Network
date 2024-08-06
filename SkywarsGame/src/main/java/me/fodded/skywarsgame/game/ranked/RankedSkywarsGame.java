@@ -31,7 +31,7 @@ public class RankedSkywarsGame extends AbstractGame {
 
     @Override
     public void registerGameStates() {
-        getGameStateController().registerGameState(new WaitState(this, "Waiting for players...", 20*10));
+        getGameStateController().registerGameState(new WaitState(this, "Waiting for players...", 20 * 10));
     }
 
     @Override

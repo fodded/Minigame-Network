@@ -28,7 +28,7 @@ public class PlayerMongoStorage<T extends AbstractPlayerData> extends MongoStora
     public CompletableFuture<T> loadData(UUID uuid, T playerDataClass) {
         return CompletableFuture.supplyAsync(() -> {
             Document foundDocument = playersCollection.find(Filters.eq("uuid", uuid.toString())).first();
-            if(foundDocument == null) {
+            if (foundDocument == null) {
                 return playerDataClass;
             }
 

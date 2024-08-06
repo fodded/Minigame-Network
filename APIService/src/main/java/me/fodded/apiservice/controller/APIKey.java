@@ -23,7 +23,7 @@ public class APIKey {
     }
 
     public void updateRequestsSent() throws OverlyUsedKeyException {
-        if(lastSentRequests.size() > maxRequestsPerMinute) {
+        if (lastSentRequests.size() > maxRequestsPerMinute) {
             throw new OverlyUsedKeyException("You're exceeding the rate limit, please slow down");
         }
 

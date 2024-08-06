@@ -6,6 +6,7 @@ import java.util.Map;
 public class PlayerStateRegistry {
 
     private final Map<Class<? extends AbstractPlayerState>, AbstractPlayerState> states = new HashMap<>();
+
     public void registerState(AbstractPlayerState state) {
         states.put(state.getClass(), state);
     }

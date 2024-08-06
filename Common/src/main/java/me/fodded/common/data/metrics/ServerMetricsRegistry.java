@@ -38,7 +38,7 @@ public class ServerMetricsRegistry {
 
     public void tick() {
         List<Point> points = new ArrayList<>();
-        for(ServerMetric metric : this.registeredMetrics.values()) {
+        for (ServerMetric metric : this.registeredMetrics.values()) {
             Point measurement = metric.measure().join();
             measurement.addTag("server-instance", serverName);
 

@@ -22,7 +22,7 @@ public class Main extends JavaPlugin {
     private static Main instance;
 
     private ServerCommon serverCommon;
-    private MinigameInstance minigameInstance;
+    private MinigameInstance<RankedSkywarsInstance> minigameInstance;
 
     @Override
     public void onEnable() {
@@ -48,12 +48,12 @@ public class Main extends JavaPlugin {
         Server server = this.getServer();
         InetSocketAddress serverAddress = new InetSocketAddress(server.getIp(), server.getPort());
 
-        minigameInstance = new MinigameInstance<RankedSkywarsInstance>(serverCommon.getServerName(), serverAddress, RankedSkywarsInstance.class);
+        minigameInstance = new MinigameInstance<>(serverCommon.getServerName(), serverAddress, RankedSkywarsInstance.class);
         NetworkController.getInstance().getServerController().addServerInstance(minigameInstance);
     }
 
     @Override
     public void onDisable() {
-        NetworkController.getInstance().getServerController().removeServerInstance("skywarsgame-server-1");
+        NetworkController.getInstance().getServerController().removeServerInstance(System.getenv("SERVER_INSTANCE_NAME"));
     }
 }

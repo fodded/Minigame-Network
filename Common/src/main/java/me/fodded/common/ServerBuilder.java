@@ -42,7 +42,7 @@ public class ServerBuilder {
         serverMetricsRegistry.registerMetric(new CPUUsageMetrics());
         serverMetricsRegistry.registerMetric(new MemoryAllocatedMetrics());
         serverMetricsRegistry.registerMetric(new MemoryUsedMetrics());
-        for(ServerMetric serverMetric : serverMetrics) {
+        for (ServerMetric serverMetric : serverMetrics) {
             serverMetricsRegistry.registerMetric(serverMetric);
         }
 

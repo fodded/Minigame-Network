@@ -37,7 +37,7 @@ public class GameMechanicsController {
 
     @SafeVarargs
     private final void toggle(boolean flag, Class<? extends AbstractGameMechanic>... gameMechanicClasses) {
-        for(Class<? extends AbstractGameMechanic> gameMechanicClass : gameMechanicClasses) {
+        for (Class<? extends AbstractGameMechanic> gameMechanicClass : gameMechanicClasses) {
             AbstractGameMechanic gameMechanic = getGameMechanic(gameMechanicClass);
             gameMechanic.setEnabled(flag);
         }

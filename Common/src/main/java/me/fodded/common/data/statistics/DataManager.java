@@ -24,7 +24,8 @@ public abstract class DataManager<K, V> implements IDataName {
 
     @SuppressWarnings("unchecked")
     public DataManager(Function<K, V> defaultData) {
-        TypeToken<V> typeToken = new TypeToken<V>(getClass()) {};
+        TypeToken<V> typeToken = new TypeToken<V>(getClass()) {
+        };
         this.dataClass = (Class<V>) typeToken.getRawType();
         this.defaultData = defaultData;
 
@@ -36,9 +37,8 @@ public abstract class DataManager<K, V> implements IDataName {
      * otherwise it will attempt to load it from redis or mongodb and put in the cache later
      * The operation is processed asynchronously
      *
-     * @param shouldCreateNewData
-     * if data is not present in case player has never been on the server,
-     * then we either create new data for them, or we don't, depending on what value is passed to the parameter
+     * @param shouldCreateNewData if data is not present in case player has never been on the server,
+     *                            then we either create new data for them, or we don't, depending on what value is passed to the parameter
      */
     public CompletableFuture<V> getData(K key, boolean shouldCreateNewData) {
         try {

@@ -26,7 +26,7 @@ public class PlayerData extends AbstractData {
             UUID seekingPlayerUUID = APIKeyController.getInstance().getUUID(inputData[3], "Could not find player with uuid " + inputData[3]);
             try {
                 DataManager dataManager = GlobalDataRegistry.getInstance().getDataManager(dataName);
-                if(dataManager == null) {
+                if (dataManager == null) {
                     throw new InvalidStatsRequestException("Could not find stats " + dataName);
                 }
 

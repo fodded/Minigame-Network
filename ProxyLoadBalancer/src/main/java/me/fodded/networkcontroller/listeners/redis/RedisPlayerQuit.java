@@ -26,7 +26,7 @@ public class RedisPlayerQuit implements IRedisListener {
         Plugin plugin = ProxyLoadBalancer.getInstance();
         ProxyServer proxy = plugin.getProxy();
 
-        proxy.getScheduler().runAsync(plugin, ()-> {
+        proxy.getScheduler().runAsync(plugin, () -> {
             NetworkInstance networkInstance = NetworkController.getInstance().getNetworkInstance();
             networkInstance.getNetworkPlayer(playerUUID).ifPresent(networkPlayer -> {
                 networkInstance.untrackPlayer(networkPlayer);

@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 public class GameEventHandler implements Listener {
 
     private final JavaPlugin plugin;
+
     public GameEventHandler(JavaPlugin plugin) {
         this.plugin = plugin;
     }

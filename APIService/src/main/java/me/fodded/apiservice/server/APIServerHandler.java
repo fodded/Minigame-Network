@@ -17,8 +17,7 @@ import java.util.concurrent.CompletableFuture;
 public class APIServerHandler implements HttpHandler {
 
     @Override
-    public void handle(HttpExchange exchange)
-    {
+    public void handle(HttpExchange exchange) {
         CompletableFuture.runAsync(() -> {
             try {
                 String responseMessage = getResponseMessage(exchange.getRequestURI().toString());

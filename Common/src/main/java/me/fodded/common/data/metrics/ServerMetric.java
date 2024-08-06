@@ -6,5 +6,6 @@ import java.util.concurrent.CompletableFuture;
 
 public interface ServerMetric {
     String getName();
+
     CompletableFuture<Point> measure();
 }
