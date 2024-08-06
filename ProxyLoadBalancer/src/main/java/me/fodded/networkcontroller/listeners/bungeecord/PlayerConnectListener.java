@@ -14,7 +14,7 @@ import java.util.UUID;
 
 
 /**
- * Here we let other servers know that a player left the proxyloadbalancer, and we should complete appropriate calculations
+ * Here we let other servers know that a player left the ProxyLoadBalancer, and we should complete appropriate calculations
  */
 public class PlayerConnectListener implements Listener {
 
@@ -29,14 +29,6 @@ public class PlayerConnectListener implements Listener {
 
         PlayerJoinPacket playerJoinPacket = new PlayerJoinPacket(playerUUID, serverInstanceString, proxyInstanceName);
         serverCommon.getRedisClient().publishMessageAsync("playerJoin", playerJoinPacket.serializePacketInfo());
-
-        // TODO: remove it later, left it here for testing purposes
-        NetworkController networkController = NetworkController.getInstance();
-        networkController.getNetworkInstance().getNetworkPlayer(playerUUID).ifPresent(networkPlayer -> {
-            networkController.getGameInstanceFinderFactory().getInstance("ranked_normal").ifPresent(abstractGameInstance -> {
-                networkPlayer.sendToServer(abstractGameInstance.findServerInstance(networkPlayer).getServerName());
-            });
-        });
     }
 
     @EventHandler
