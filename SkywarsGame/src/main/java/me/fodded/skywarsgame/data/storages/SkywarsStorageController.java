@@ -11,6 +11,6 @@ public class SkywarsStorageController extends AbstractStorageController {
         IPlayerDataStorage<?> playerDataStorage = new PlayerMongoStorage<>();
         playerDataStorage.initialize();
 
-        this.storagesMap.put(playerDataStorage.getClass(), playerDataStorage);
+        this.storagesMap.put(IPlayerDataStorage.class, playerDataStorage);
     }
 }
